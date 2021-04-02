@@ -25,6 +25,9 @@ import ReactDom from 'react-dom'
 import { Provider } from 'react-redux'
 import { store } from './reducers/index'
 import App from './App'
+import firebase from 'firebase'
+import * as usersSources from 'sources/users'
+import * as apiServices from 'services/api'
 
 if (ENV.NATIVE) {
   document.addEventListener('deviceready', onDeviceReady, false)
@@ -33,6 +36,21 @@ if (ENV.NATIVE) {
 }
 
 function onDeviceReady () {
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCHdA9Dc0EjqCyN7haA5Ki2aCsDKA2O_7c",
+    authDomain: "movienight-8cbd0.firebaseapp.com",
+    projectId: "movienight-8cbd0",
+    storageBucket: "movienight-8cbd0.appspot.com",
+    messagingSenderId: "662728681107",
+    appId: "1:662728681107:web:efb5c979e48fc27d3c4f66"
+  }
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig)
+
+  apiServices.initialize()
+  usersSources.initialize(store.dispatch) // after firebase init
+
   ReactDom.render(
     <Provider store={store}>
       <App />
@@ -40,4 +58,9 @@ function onDeviceReady () {
     ,
     document.getElementById('deviceready')
   )
+}
+
+window.Debug = {
+  store: store,
+  apiServices
 }

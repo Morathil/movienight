@@ -14,6 +14,7 @@ const resolveAlias = {
   utils: path.resolve(__dirname, 'src/utils/'),
   constants: path.resolve(__dirname, 'src/constants/'),
   selectors: path.resolve(__dirname, 'src/selectors/'),
+  sources: path.resolve(__dirname, 'src/sources/'),
   src: path.resolve(__dirname, 'src/')
 }
 

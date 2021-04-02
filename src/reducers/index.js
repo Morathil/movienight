@@ -5,17 +5,18 @@ import thunk from 'redux-thunk'
 
 // Reducers
 import { movies } from './movies'
-
+import { users } from './users'
 
 const composes = [applyMiddleware(thunk)]
 
-if (ENV.BROWSER && window.__REDUX_DEVTOOLS_EXTENSION__) {
+if (!ENV.NATIVE && window.__REDUX_DEVTOOLS_EXTENSION__) {
   composes.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 }
 
 export const store = createStore(
   combineReducers(produce, {
-    movies
+    movies,
+    users
   }),
   compose(...composes)
 )

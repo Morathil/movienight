@@ -18,3 +18,6 @@
 
 ## Cordova (Cross Platform)
 - https://cordova.apache.org/
+
+## Firebase (Backend as a service)
+- https://firebase.google.com/
