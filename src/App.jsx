@@ -21,7 +21,6 @@ const uiConfig = {
 class App extends Component {
   render () {
     const { currentUser } = this.props
-    console.log(currentUser)
     return (
       <div>
         {currentUser ? this.renderContent() : this.renderLogin()}

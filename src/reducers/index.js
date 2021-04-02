@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 // Reducers
 import { movies } from './movies'
 import { users } from './users'
+import { groups } from './groups'
 
 const composes = [applyMiddleware(thunk)]
 
@@ -16,7 +17,8 @@ if (!ENV.NATIVE && window.__REDUX_DEVTOOLS_EXTENSION__) {
 export const store = createStore(
   combineReducers(produce, {
     movies,
-    users
+    users,
+    groups
   }),
   compose(...composes)
 )

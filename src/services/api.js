@@ -1,4 +1,8 @@
 import firebase from 'firebase'
+import theMovieDb from 'themoviedb-javascript-library'
+
+theMovieDb.common.api_key = 'daa66f5210f8a8701152ec93f60ae169'
+window.theMovieDb = theMovieDb
 
 let database
 
@@ -8,17 +12,20 @@ export function initialize () {
 
 // GROUPS
 
-export function createGroup (currentUser) {
+export function createGroup (currentUser, movies) {
+  let persistedMovies = {}
+
+  movies.forEach((movie) => {
+    persistedMovies[movie.id] = movie
+  })
+
   return database.collection('groups').add({
     token: 'generatedToken', // TODO: generate
     admin: currentUser.uid,
     members: [currentUser.uid],
-    movies: {
-      ratings: {},
-      list: []
-    }
-  }).then((docRef) => {
-    console.log(docRef)
+    movies: persistedMovies
+  }).then(() => {
+    console.log('success write')
   }).catch((error) => {
     console.warn(error)
   })
@@ -51,11 +58,19 @@ export function fetchGroupMemberships (currentUser) {
     .get()
     .then((querySnapshot) => {
       if (querySnapshot) {
-        console.log(querySnapshot)
-        const doc = querySnapshot.forEach((doc) => {
-          console.log(doc.data())
+        let groups = []
+        querySnapshot.forEach((doc) => {
+          if (doc.exists) {
+            let data = doc.data()
+            data.id = doc.id
+            groups.push(data)
+          }
         })
+
+        return groups
       }
+
+      return []
     })
 }
 
@@ -63,8 +78,8 @@ export function rateMovie (currentUser, groupId, movieId, rating) {
   return database.collection('groups').doc(groupId)
     .set({
         movies: {
-          ratings: {
-            [movieId]: {
+          [movieId]: {
+            memberRatings: {
               [currentUser.uid]: rating
             }
           }
@@ -78,14 +93,16 @@ export function rateMovie (currentUser, groupId, movieId, rating) {
 
 // MOVIES
 
-export function fetchMovies (movieIds) {
-  return Promise.all(
-    movieIds.map((movieId) => {
-      return database.collection('movies').doc(movieId).get()
-    })
-  ).then((response) =>{
-    response.forEach((r) => {
-      console.log(r.data())
-    })
+export function fetchMovieGenres () {
+  return new Promise((resolve, reject) => {
+    theMovieDb.genres.getMovieList({}, resolve, reject)
+  })
+}
+
+export function fetchMoviesFromExternal (genreIds) {
+  return new Promise((resolve, reject) => {
+    theMovieDb.discover.getMovies({
+      with_genres: genreIds.join(',')
+    }, resolve, reject)
   })
 }

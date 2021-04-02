@@ -26,6 +26,8 @@ import { Provider } from 'react-redux'
 import { store } from './reducers/index'
 import App from './App'
 import firebase from 'firebase'
+import * as groupsActions from 'actions/groups'
+import * as moviesActions from 'actions/movies'
 import * as usersSources from 'sources/users'
 import * as apiServices from 'services/api'
 
@@ -62,5 +64,9 @@ function onDeviceReady () {
 
 window.Debug = {
   store: store,
-  apiServices
+  apiServices,
+  groupsActions,
+  moviesActions
 }
+
+window.log = (data) => { console.log(data) }
