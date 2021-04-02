@@ -6,11 +6,17 @@ export function initialize () {
   database = firebase.firestore()
 }
 
+// GROUPS
+
 export function createGroup (currentUser) {
-  database.collection('groups').add({
+  return database.collection('groups').add({
     token: 'generatedToken', // TODO: generate
     admin: currentUser.uid,
-    members: [currentUser.uid]
+    members: [currentUser.uid],
+    movies: {
+      ratings: {},
+      list: []
+    }
   }).then((docRef) => {
     console.log(docRef)
   }).catch((error) => {
@@ -19,7 +25,7 @@ export function createGroup (currentUser) {
 }
 
 export function joinGroup (currentUser, groupToken) {
-  database.collection('groups').where('token', '==', groupToken)
+  return database.collection('groups').where('token', '==', groupToken)
     .get()
     .then((querySnapshot) => {
       if (querySnapshot) {
@@ -41,7 +47,7 @@ export function joinGroup (currentUser, groupToken) {
 }
 
 export function fetchGroupMemberships (currentUser) {
-  database.collection('groups').where('members', 'array-contains', currentUser.uid)
+  return database.collection('groups').where('members', 'array-contains', currentUser.uid)
     .get()
     .then((querySnapshot) => {
       if (querySnapshot) {
@@ -51,4 +57,35 @@ export function fetchGroupMemberships (currentUser) {
         })
       }
     })
+}
+
+export function rateMovie (currentUser, groupId, movieId, rating) {
+  return database.collection('groups').doc(groupId)
+    .set({
+        movies: {
+          ratings: {
+            [movieId]: {
+              [currentUser.uid]: rating
+            }
+          }
+        }
+    }, { merge: true }).then(() => {
+      console.log('success write')
+    }).catch((error) => {
+      console.warn(error)
+    })
+}
+
+// MOVIES
+
+export function fetchMovies (movieIds) {
+  return Promise.all(
+    movieIds.map((movieId) => {
+      return database.collection('movies').doc(movieId).get()
+    })
+  ).then((response) =>{
+    response.forEach((r) => {
+      console.log(r.data())
+    })
+  })
 }
