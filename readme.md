@@ -21,3 +21,9 @@
 
 ## Firebase (Backend as a service)
 - https://firebase.google.com/
+
+## theMovieDb
+- https://www.themoviedb.org/
+
+### Load images
+- https://image.tmdb.org/t/p/w500/lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg
