@@ -26,6 +26,9 @@ export function createGroup (currentUser, movies, groupName, dateTime) {
     token: uuidv4(),
     admin: currentUser.uid,
     members: [currentUser.uid],
+    nameByMemberId: {
+      [currentUser.uid]: currentUser.displayName
+    },
     movies: persistedMovies
   }).then((response) => {
     return response.id
@@ -45,7 +48,10 @@ export function joinGroup (currentUser, groupToken) {
             console.log(doc)
             database.collection('groups').doc(doc.id)
               .set({
-                members: [...doc.data().members, currentUser.uid]
+                members: [...doc.data().members, currentUser.uid],
+                nameByMemberId: {
+                  [currentUser.uid]: currentUser.displayName
+                },
               }, { merge: true })
               .then(() => {
                 console.log('success write')

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import { Grid, Typography, Button, ButtonBase } from '@material-ui/core/'
+import { Grid, Typography, Button, ButtonBase, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, IconButton, Card, CardMedia, CardContent,  } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 
@@ -11,27 +11,32 @@ class Home extends Component {
     return (
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant='h3'>
+          <Typography variant='h4'>
             Movienight
           </Typography>
         </Grid>
         <Grid item xs={12}>
+          <List>
           {Object.values(groups).map((group) => {
+            const topRatedMovies = Object.values(group.movies).sort((ma, mb) => {
+              const avgRatingA = ma.memberRatings ? (Object.values(ma.memberRatings).reduce((value, reduction) => value + reduction, 0) / Object.values(ma.memberRatings).length) : 0
+              const avgRatingB = mb.memberRatings ? (Object.values(mb.memberRatings).reduce((value, reduction) => value + reduction, 0) / Object.values(mb.memberRatings).length) : 0
+              return avgRatingB - avgRatingA
+            })
             return (
-              <Grid container key={group.id}>
-                <ButtonBase onClick={this.handleShowGroupDetails.bind(this, group.id)}>
-                  <Grid item xs={6}>
-                    <Typography variant='body1'>
+              <ListItem key={group.id} style={{ marginBottom: '4px' }} onClick={this.handleShowGroupDetails.bind(this, group.id)}>
+                <Card style={{ width: '100%' }}>
+                  <CardMedia style={{ height: '15vh', backgroundSize: 'cover', backgroundPosition: '0 20%' }} image={`https://image.tmdb.org/t/p/w500${topRatedMovies[0].backdrop_path}`} />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6">
                       {group.name}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <ArrowForwardIcon />
-                  </Grid>
-                </ButtonBase>
-              </Grid>
+                  </CardContent>
+                </Card>
+              </ListItem>
             )
           })}
+          </List>
         </Grid>
         <Grid item xs={12}>
           <Button variant='contained' color='primary' onClick={this.handleOnCreateGroup}>
