@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import theMovieDb from 'themoviedb-javascript-library'
+import { v4 as uuidv4 } from 'uuid'
 
 theMovieDb.common.api_key = 'daa66f5210f8a8701152ec93f60ae169'
 window.theMovieDb = theMovieDb
@@ -12,7 +13,7 @@ export function initialize () {
 
 // GROUPS
 
-export function createGroup (currentUser, movies) {
+export function createGroup (currentUser, movies, groupName, dateTime) {
   let persistedMovies = {}
 
   movies.forEach((movie) => {
@@ -20,12 +21,14 @@ export function createGroup (currentUser, movies) {
   })
 
   return database.collection('groups').add({
-    token: 'generatedToken', // TODO: generate
+    name: groupName,
+    dateTime: dateTime,
+    token: uuidv4(),
     admin: currentUser.uid,
     members: [currentUser.uid],
     movies: persistedMovies
-  }).then(() => {
-    console.log('success write')
+  }).then((response) => {
+    return response.id
   }).catch((error) => {
     console.warn(error)
   })
@@ -37,17 +40,20 @@ export function joinGroup (currentUser, groupToken) {
     .then((querySnapshot) => {
       if (querySnapshot) {
         console.log(querySnapshot)
-        const doc = querySnapshot.forEach((doc) => {
-          console.log(doc)
-          database.collection('groups').doc(doc.id)
-            .set({
-              members: [...doc.data().members, currentUser.uid]
-            }, { merge: true })
-            .then(() => {
-              console.log('success write')
-            }).catch((error) => {
-              console.warn(error)
-            })
+        return new Promise((resolve, reject) => {
+          querySnapshot.forEach((doc) => {
+            console.log(doc)
+            database.collection('groups').doc(doc.id)
+              .set({
+                members: [...doc.data().members, currentUser.uid]
+              }, { merge: true })
+              .then(() => {
+                console.log('success write')
+                resolve(doc.id)
+              }).catch((error) => {
+                console.warn(error)
+              })
+          })
         })
       }
     })

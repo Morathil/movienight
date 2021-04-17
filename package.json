@@ -42,6 +42,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.4.0",
     "@types/cordova": "0.0.34",
     "@types/react": "^17.0.0",
@@ -57,6 +59,7 @@
     "react-redux": "^7.2.1",
     "redux-immer": "^1.0.5",
     "reselect": "^4.0.0",
-    "themoviedb-javascript-library": "^3.0.3"
+    "themoviedb-javascript-library": "^3.0.3",
+    "uuid": "^8.3.2"
   }
 }
