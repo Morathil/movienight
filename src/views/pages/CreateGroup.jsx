@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Grid, Typography, Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
 import * as groupsActions from 'actions/groups'
+import BottomButton from 'views/components/BottomButton'
+import TopBar from 'views/components/TopBar'
 
 class CreateGroup extends Component {
   state = {
@@ -17,13 +19,9 @@ class CreateGroup extends Component {
     const formattedDatetime = new Date(new Date(datetime).toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
 
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant='h3'>
-            CreateGroup
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Grid container style={{ minHeight: '100vh' }} direction='column'>
+        <TopBar />
+        <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth id='groupName' label='Group Name' value={groupName || ''} />
           <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth required id='datetime' label={'Date'} type='datetime-local' value={formattedDatetime} />
           <FormControl fullWidth={true}>
@@ -41,9 +39,9 @@ class CreateGroup extends Component {
           </FormControl>          
         </Grid>
         <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={this.handleOnCreateGroup}>
+          <BottomButton onAction={this.handleOnCreateGroup}>
             Create Group
-          </Button>
+          </BottomButton>
         </Grid>
       </Grid>
     )

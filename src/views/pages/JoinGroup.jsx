@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Grid, Typography, Button, TextField } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
 import * as groupsActions from 'actions/groups'
+import BottomButton from 'views/components/BottomButton'
+import TopBar from 'views/components/TopBar'
 
 class JoinGroup extends Component {
   state = {
@@ -14,19 +16,15 @@ class JoinGroup extends Component {
     const { joinToken } = this.state
 
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant='h3'>
-            Join Group
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Grid container style={{ minHeight: '100vh' }} direction='column'>
+        <TopBar />
+        <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth id='joinToken' label='Join Token' value={joinToken || ''} />
         </Grid>
         <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={this.handleOnJoinGroup}>
+          <BottomButton onAction={this.handleOnJoinGroup}>
             Join Group
-          </Button>
+          </BottomButton>
         </Grid>
       </Grid>
     )

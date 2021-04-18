@@ -2,19 +2,22 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Grid, Typography, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
+import BottomButton from 'views/components/BottomButton'
+import TopBar from 'views/components/TopBar'
 
 class GroupDetails extends Component {
   render () {
     const { group, topRatedMovies } = this.props
 
     return (
-      <Grid container>
+      <Grid container style={{ minHeight: '100vh' }} direction='column'>
+        <TopBar />
         <Grid item xs={12}>
           <Typography variant='h5'>
             {group.name} - {new Date(group.dateTime).toLocaleDateString()}
           </Typography>
         </Grid>
-        <Grid container>
+        <Grid container style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <List>
             {topRatedMovies.map((movie) => {
               return (
@@ -48,9 +51,9 @@ class GroupDetails extends Component {
           </List>
         </Grid>
         <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={this.handleOnRateMovie}>
+          <BottomButton onAction={this.handleOnRateMovie}>
             Rate Movies
-          </Button>
+          </BottomButton>
         </Grid>
       </Grid>
     )
@@ -59,16 +62,6 @@ class GroupDetails extends Component {
   handleOnRateMovie = () => {
     const { dispatch, group } = this.props
     dispatch(uiActions.changePage('RateMovies', { groupId: group.id }))
-  }
-
-  handleOnCreateGroup = () => {
-    const { dispatch } = this.props
-    dispatch(uiActions.changePage('CreateGroup'))
-  }
-
-  handleonJoinGroup = () => {
-    const { dispatch } = this.props
-    dispatch(uiActions.changePage('GroupDetails'))
   }
 }
 

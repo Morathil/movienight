@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Grid, Typography, Button, Card, CardMedia, CardContent, CardActions } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
 import * as groupsActions from 'actions/groups'
+import BottomButton from 'views/components/BottomButton'
+import TopBar from 'views/components/TopBar'
 
 class RateMovies extends Component {
   render () {
@@ -11,6 +13,7 @@ class RateMovies extends Component {
     if (!movie) {
       return (
         <Grid container>
+          <TopBar />
           <Grid item xs={12}>
             <Typography variant='h3'>
               You already voted for all movies! Well done!
@@ -21,10 +24,11 @@ class RateMovies extends Component {
     }
 
     return (
-      <Grid container>
-        <Grid item xs={12}>
+      <Grid container style={{ minHeight: '100vh' }} direction='column'>
+        <TopBar />
+        <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <Card>
-            <CardMedia style={{ height: '55vh', backgroundSize: 'contain' }} image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+            <CardMedia style={{ height: '55vh', backgroundSize: 'contain', marginTop: '5px' }} image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {movie.title} - {movie.release_date.slice(0,4)}
@@ -33,21 +37,29 @@ class RateMovies extends Component {
                 {movie.overview}
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button size='small' color='primary' onClick={this.rateMovie.bind(this, 1)}>
-                Rate 1
-              </Button>
-              <Button size='small' color='primary' onClick={this.rateMovie.bind(this, 2)}>
-                Rate 2
-              </Button>
-              <Button size='small' color='primary' onClick={this.rateMovie.bind(this, 3)}>
-                Rate 3
-              </Button>
-              <Button size='small' color='primary' onClick={this.rateMovie.bind(this, 4)}>
-                Rate 4
-              </Button>
-            </CardActions>
           </Card>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <BottomButton onAction={this.rateMovie.bind(this, 1)}>
+              Rate 1
+            </BottomButton>
+          </Grid>
+          <Grid item xs={3}>
+            <BottomButton onAction={this.rateMovie.bind(this, 2)}>
+              Rate 2
+            </BottomButton>
+          </Grid>
+          <Grid item xs={3}>
+            <BottomButton onAction={this.rateMovie.bind(this, 3)}>
+              Rate 3
+            </BottomButton>
+          </Grid>
+          <Grid item xs={3}>
+            <BottomButton onAction={this.rateMovie.bind(this, 4)}>
+              Rate 4
+            </BottomButton>
+          </Grid>                                
         </Grid>
       </Grid>
     )

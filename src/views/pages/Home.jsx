@@ -2,20 +2,17 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Grid, Typography, Button, ButtonBase, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, IconButton, Card, CardMedia, CardContent,  } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import BottomButton from 'views/components/BottomButton'
+import TopBar from 'views/components/TopBar'
 
 class Home extends Component {
   render () {
     const { groups } = this.props
 
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant='h4'>
-            Movienight
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Grid container style={{ minHeight: '100vh' }} direction='column'>
+        <TopBar />
+        <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <List>
           {Object.values(groups).map((group) => {
             const topRatedMovies = Object.values(group.movies).sort((ma, mb) => {
@@ -38,15 +35,17 @@ class Home extends Component {
           })}
           </List>
         </Grid>
-        <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={this.handleOnCreateGroup}>
-            Create Group
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={this.handleonJoinGroup}>
+        <Grid container>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleOnCreateGroup}>
+              Create Group
+            </BottomButton>
+          </Grid>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleonJoinGroup} colorType='secondary'>
             Join Group
-          </Button>
+            </BottomButton>
+          </Grid>
         </Grid>
       </Grid>
     )
