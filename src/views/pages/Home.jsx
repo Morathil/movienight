@@ -25,8 +25,11 @@ class Home extends Component {
                 <Card style={{ width: '100%' }}>
                   <CardMedia style={{ height: '15vh', backgroundSize: 'cover', backgroundPosition: '0 20%' }} image={`https://image.tmdb.org/t/p/w500${topRatedMovies[0].backdrop_path}`} />
                   <CardContent>
-                    <Typography gutterBottom variant="h6">
+                    <Typography gutterBottom variant="h6" style={{ marginBottom: '-6px' }}>
                       {group.name}
+                    </Typography>
+                    <Typography gutterBottom variant="caption">
+                      {new Date(group.dateTime).toLocaleDateString()}
                     </Typography>
                   </CardContent>
                 </Card>
