@@ -13,7 +13,7 @@ export function initialize () {
 
 // GROUPS
 
-export function createGroup (currentUser, movies, groupName, dateTime) {
+export function createGroup (currentUser, movies, groupName, dateTime, groupDescription) {
   let persistedMovies = {}
 
   movies.forEach((movie) => {
@@ -22,6 +22,7 @@ export function createGroup (currentUser, movies, groupName, dateTime) {
 
   return database.collection('groups').add({
     name: groupName,
+    description: groupDescription,
     dateTime: dateTime,
     token: uuidv4(),
     admin: currentUser.uid,

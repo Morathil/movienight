@@ -10,21 +10,26 @@ class CreateGroup extends Component {
   state = {
     selectedGenreIds: undefined,
     datetime: new Date().getTime(),
-    groupName: undefined
+    groupName: undefined,
+    groupDescription: undefined
   }
 
   render () {
     const { genreEntities } = this.props
-    const { selectedGenreIds, datetime, groupName } = this.state
+    const { selectedGenreIds, datetime, groupName, groupDescription } = this.state
     const formattedDatetime = new Date(new Date(datetime).toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
 
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
-        <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
-          <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth id='groupName' label='Group Name' value={groupName || ''} />
-          <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth required id='datetime' label={'Date'} type='datetime-local' value={formattedDatetime} />
-          <FormControl fullWidth={true}>
+        <Grid item xs={11} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
+          <TextField style={{ margin: '5px' }} onChange={this.handleOnChange} fullWidth id='groupName' label='Group Name' value={groupName || ''} />
+          <TextField
+          style={{ margin: '12px' }} onChange={this.handleOnChange} id="groupDescription" fullWidth multiline
+          rows={4} placeholder="Whats your movienight about ?"
+          />
+          <TextField style={{ margin: '5px' }} onChange={this.handleOnChange} fullWidth required id='datetime' label={'Date'} type='datetime-local' value={formattedDatetime} />
+          <FormControl style={{ margin: '5px' }} fullWidth={true}>
             <InputLabel>Genre</InputLabel>
             <Select
               id='genre'
@@ -36,7 +41,7 @@ class CreateGroup extends Component {
                   return <MenuItem key={genre.id} value={genre.id}>{genre.name}</MenuItem>
                 })}
             </Select>
-          </FormControl>          
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <BottomButton onAction={this.handleOnCreateGroup}>
@@ -58,8 +63,8 @@ class CreateGroup extends Component {
 
   handleOnCreateGroup = () => {
     const { dispatch } = this.props
-    const { selectedGenreIds, datetime, groupName } = this.state
-    dispatch(groupsActions.createGroup(groupName, datetime, selectedGenreIds))
+    const { selectedGenreIds, datetime, groupName, groupDescription } = this.state
+    dispatch(groupsActions.createGroup(groupName, datetime, selectedGenreIds, groupDescription))
   }
 
   handleonJoinGroup = () => {

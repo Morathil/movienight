@@ -17,6 +17,9 @@ class GroupDetails extends Component {
             {group.name} - {new Date(group.dateTime).toLocaleDateString()}
           </Typography>
         </Grid>
+        <Grid item xs={12}>
+        {group.description} 
+        </Grid>
         <Grid container style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <List>
             {topRatedMovies.map((movie) => {
