@@ -4,36 +4,71 @@ import { Grid, Typography, Button, List, ListItem, ListItemText, ListItemSeconda
 import * as uiActions from 'actions/ui'
 import BottomButton from 'views/components/BottomButton'
 import TopBar from 'views/components/TopBar'
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import ListSubheader from '@material-ui/core/ListSubheader';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+import Box from '@material-ui/core/Box';
+import { spacing } from '@material-ui/system';
+
+
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
 class GroupDetails extends Component {
   render () {
-    const { group, topRatedMovies } = this.props
-
+    const { group, topRatedMovies } = this.props;
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
         <Grid item xs={12}>
-          <Typography variant='h5'>
+          <Typography variant='h3'>
             {group.name} - {new Date(group.dateTime).toLocaleDateString()}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-        {group.description} 
+        <Grid item style={{ minHeight: '10vh' }} xs={12}>
+        {group.description}
         </Grid>
-        <Grid container style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
-          <List>
-            {topRatedMovies.map((movie) => {
-              return (
-                <ListItem key={movie.id}>
-                  <ListItemText primary={movie.title} />
-                  <ListItemSecondaryAction>
-                  {movie.memberRatings ? (Object.values(movie.memberRatings).reduce((value, reduction) => value + reduction, 0) / Object.values(movie.memberRatings).length) : 0}
-                  </ListItemSecondaryAction>
-                </ListItem>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Movie Title</TableCell>
+                <TableCell align="right">Rating</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {topRatedMovies.map((movie) => {
+                return (
+                <TableRow key={movie.id}>
+                  <TableCell component="th" scope="row">
+                    {movie.title}
+                  </TableCell>
+                  <TableCell>{movie.memberRatings ? (Object.values(movie.memberRatings).reduce((value, reduction) => value + reduction, 0) / Object.values(movie.memberRatings).length) : 0}
+                  </TableCell>
+                </TableRow>
               )
-            })}
-          </List>
-        </Grid>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Grid item xs={12}>
           <Typography variant='body1'>
             Share the token with your friends: {group.token}
@@ -59,7 +94,7 @@ class GroupDetails extends Component {
           </BottomButton>
         </Grid>
       </Grid>
-    )
+    );
   }
 
   handleOnRateMovie = () => {
