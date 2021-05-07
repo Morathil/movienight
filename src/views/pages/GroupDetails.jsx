@@ -2,10 +2,10 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Grid, Typography, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
+import * as groupsActions from 'actions/groups'
 import BottomButton from 'views/components/BottomButton'
 import TopBar from 'views/components/TopBar'
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,13 +18,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 class GroupDetails extends Component {
   render () {
     const { group, topRatedMovies } = this.props;
-    const {token} = 0;
 
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
         <Grid item xs={12}>
-          <Typography variant='h3'>
+          <Typography variant='h5'>
             {group.name} - {new Date(group.dateTime).toLocaleDateString()}
           </Typography>
         </Grid>
@@ -56,11 +55,8 @@ class GroupDetails extends Component {
         </TableContainer>
         <Grid item style={{ minHeight: '20vh' }} xs={12}>
           <Typography variant='body1'>
-            Share the token with your friends: {token}
+            Share the token with your friends: {group.token}
           </Typography>
-            <Tooltip disableFocusListener disableTouchListener title="Add">
-              <Button onClick={this.handleTokenButton}>Add Friends to this Group</Button>
-            </Tooltip>
         </Grid>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
@@ -78,14 +74,21 @@ class GroupDetails extends Component {
                   </TableCell>
                 </TableRow>
               )
-              })}
+            })}
             </TableBody>
           </Table>
         </TableContainer>
-        <Grid item xs={12}>
-          <BottomButton onAction={this.handleOnRateMovie}>
-            Rate Movies
-          </BottomButton>
+        <Grid container>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleOnRateMovie}>
+              Rate Movies
+            </BottomButton>
+          </Grid>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleLeaveGroup} colorType='secondary'>
+              Leave Group
+            </BottomButton>
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -96,11 +99,11 @@ class GroupDetails extends Component {
     dispatch(uiActions.changePage('RateMovies', { groupId: group.id }))
   }
 
-  handleTokenButton = () => {
-    const {group} = this.props
-    const token = group.token
+  handleLeaveGroup = () => {
+    const { dispatch, group } = this.props
+    const groupToken = group.token
+    dispatch(groupsActions.leaveGroup(groupToken))
   }
-
 }
 
 function mapStateToProps (state) {

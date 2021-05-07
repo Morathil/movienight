@@ -38,6 +38,43 @@ export function createGroup (currentUser, movies, groupName, dateTime, groupDesc
   })
 }
 
+// export function deleteGroup (groupToken){
+//   database.collection('groups').where('token', '==', groupToken)
+//   .get().then((querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//       database.collection('groups').doc(doc.id)
+//         .delete()
+//     });
+//   });
+// }
+
+export function leaveGroup (groupToken, currentUser) {
+  return database.collection('groups').where('token', '==', groupToken)
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot) {
+        console.log(querySnapshot)
+        return new Promise((resolve, reject) => {
+          querySnapshot.forEach((doc) => {
+            let nameByMemberId = doc.data().nameByMemberId
+            delete nameByMemberId[currentUser.uid]
+            database.collection('groups').doc(doc.id)
+              .set({
+                members: [...doc.data().members.filter((nameByMemberId) => nameByMemberId !== currentUser.uid)],
+                nameByMemberId: nameByMemberId
+              }, { merge: true })
+              .then(() => {
+                console.log('success write')
+                resolve(doc.id)
+              }).catch((error) => {
+                console.warn(error)
+              })
+          })
+        })
+      }
+    })
+}
+
 export function joinGroup (currentUser, groupToken) {
   return database.collection('groups').where('token', '==', groupToken)
     .get()

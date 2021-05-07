@@ -30,3 +30,9 @@
 
 ### Load images
 - https://image.tmdb.org/t/p/w500/lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg
+
+# Future Features
+### Todos / User stories
+- Exact Time of Movienights to be able to see at what time the movienight starts
+- Location of the Movienight
+- ...

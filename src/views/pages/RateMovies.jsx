@@ -15,7 +15,7 @@ class RateMovies extends Component {
         <Grid container>
           <TopBar />
           <Grid item xs={12}>
-            <Typography variant='h3'>
+            <Typography variant='h5'>
               You already voted for all movies! Well done!
             </Typography>
           </Grid>

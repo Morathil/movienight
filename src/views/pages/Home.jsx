@@ -2,13 +2,14 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Grid, Typography, Button, ButtonBase, List, ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, IconButton, Card, CardMedia, CardContent,  } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
+import * as groupsActions from 'actions/groups'
 import BottomButton from 'views/components/BottomButton'
 import TopBar from 'views/components/TopBar'
 
 class Home extends Component {
   render () {
     const { groups } = this.props
-
+    
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
