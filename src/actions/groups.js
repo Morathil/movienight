@@ -13,6 +13,15 @@ export function createGroup (groupName, dateTime, genreIds) {
   }
 }
 
+export function leaveGroup (groupToken) {
+  return async (dispatch, getState) => {
+    const currentUser = getState().users.current
+    const groups = await apiServices.leaveGroup(groupToken, currentUser)
+    dispatch(uiActions.changePage('Home'))
+    await dispatch(fetchGroupMemberships())
+  }
+}
+
 export function joinGroup (groupToken) {
   return async (dispatch, getState) => {
     const currentUser = getState().users.current

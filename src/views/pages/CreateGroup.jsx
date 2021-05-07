@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import { Grid, Typography, Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@material-ui/core/'
+import { Grid, Typography, Button, FormControl, InputLabel, Select, MenuItem, TextField, Radio } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
 import * as groupsActions from 'actions/groups'
 import BottomButton from 'views/components/BottomButton'
@@ -24,6 +24,7 @@ class CreateGroup extends Component {
         <Grid item xs={12} style={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '76vh' }}>
           <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth id='groupName' label='Group Name' value={groupName || ''} />
           <TextField style={{ margin: '2px' }} onChange={this.handleOnChange} fullWidth required id='datetime' label={'Date'} type='datetime-local' value={formattedDatetime} />
+          
           <FormControl fullWidth={true}>
             <InputLabel>Genre</InputLabel>
             <Select
@@ -36,7 +37,7 @@ class CreateGroup extends Component {
                   return <MenuItem key={genre.id} value={genre.id}>{genre.name}</MenuItem>
                 })}
             </Select>
-          </FormControl>          
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <BottomButton onAction={this.handleOnCreateGroup}>
