@@ -12,10 +12,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 class GroupDetails extends Component {
   render () {
     const { group, topRatedMovies } = this.props;
+    const {token} = 0;
+
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
@@ -50,25 +54,34 @@ class GroupDetails extends Component {
             </TableBody>
           </Table>
         </TableContainer>
-        <Grid item xs={12}>
+        <Grid item style={{ minHeight: '20vh' }} xs={12}>
           <Typography variant='body1'>
-            Share the token with your friends: {group.token}
+            Share the token with your friends: {token}
           </Typography>
+            <Tooltip disableFocusListener disableTouchListener title="Add">
+              <Button onClick={this.handleTokenButton}>Add Friends to this Group</Button>
+            </Tooltip>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant='body1'>
-            Members:
-          </Typography>
-          <List>
-            {Object.values(group.nameByMemberId).map((name, i) => {
-              return (
-                <ListItem key={i}>
-                  <ListItemText primary={name} />
-                </ListItem>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Members</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Object.values(group.nameByMemberId).map((name, i) => {
+                return (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {name}
+                  </TableCell>
+                </TableRow>
               )
-            })}
-          </List>
-        </Grid>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Grid item xs={12}>
           <BottomButton onAction={this.handleOnRateMovie}>
             Rate Movies
@@ -82,6 +95,12 @@ class GroupDetails extends Component {
     const { dispatch, group } = this.props
     dispatch(uiActions.changePage('RateMovies', { groupId: group.id }))
   }
+
+  handleTokenButton = () => {
+    const {group} = this.props
+    const token = group.token
+  }
+
 }
 
 function mapStateToProps (state) {
