@@ -1,7 +1,14 @@
 # Getting Started
 - `git clone https://github.com/Morathil/movienight.git`
 - `npm install`
+
+## Run Browser Version
 - `npm run browser`
+
+## Run Android Version
+- Follow Android install guide - https://cordova.apache.org/docs/en/10.x/guide/platforms/android/
+- `npm run android`
+
 
 # Technologies
 ## React (UI)
