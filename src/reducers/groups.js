@@ -9,6 +9,7 @@ export const groups = (state = initialState, action) => {
       return state
 
     case 'GROUPS_MEMBERSHIPS_RECEIVED':
+      state.entities = initialState.entities
       action.payload.groups.forEach((group) => {
         state.entities[group.id] = group
       })

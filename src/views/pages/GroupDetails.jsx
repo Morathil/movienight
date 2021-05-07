@@ -2,13 +2,14 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Grid, Typography, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core/'
 import * as uiActions from 'actions/ui'
+import * as groupsActions from 'actions/groups'
 import BottomButton from 'views/components/BottomButton'
 import TopBar from 'views/components/TopBar'
 
 class GroupDetails extends Component {
   render () {
     const { group, topRatedMovies } = this.props
-
+    //const { groupToken } = this.state
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
@@ -50,10 +51,17 @@ class GroupDetails extends Component {
             })}
           </List>
         </Grid>
-        <Grid item xs={12}>
-          <BottomButton onAction={this.handleOnRateMovie}>
-            Rate Movies
-          </BottomButton>
+        <Grid container>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleOnRateMovie}>
+              Rate Movies
+            </BottomButton>
+          </Grid>
+          <Grid item xs={6}>
+            <BottomButton onAction={this.handleDeleteGroup} colorType='secondary'>
+              Leave Group
+            </BottomButton>
+          </Grid>
         </Grid>
       </Grid>
     )
@@ -63,6 +71,13 @@ class GroupDetails extends Component {
     const { dispatch, group } = this.props
     dispatch(uiActions.changePage('RateMovies', { groupId: group.id }))
   }
+
+  handleDeleteGroup = () => {
+    const { dispatch, group } = this.props
+    const groupToken = group.token
+    dispatch(groupsActions.deleteGroup(groupToken))
+    }
+
 }
 
 function mapStateToProps (state) {

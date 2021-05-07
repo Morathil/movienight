@@ -1,15 +1,24 @@
 import * as apiServices from 'services/api'
 import * as uiActions from 'actions/ui'
 
-export function createGroup (groupName, dateTime, genreIds) {
+export function createGroup (groupName, dateTime, genreIds, rating) {
   return async (dispatch, getState) => {
     const currentUser = getState().users.current
-    const externalResponse = await apiServices.fetchMoviesFromExternal(genreIds)
+    const externalResponse = await apiServices.fetchMoviesFromExternal(genreIds, rating)
     const movies = JSON.parse(externalResponse).results
     const groupId = await apiServices.createGroup(currentUser, movies, groupName, dateTime)
     await dispatch(fetchGroupMemberships())
 
     dispatch(uiActions.changePage('GroupDetails', { groupId }))
+  }
+}
+
+export function deleteGroup (groupToken) {
+  return async (dispatch, getState) => {
+    const currentUser = getState().users.current
+    const groups = await apiServices.deleteGroup(groupToken, currentUser)
+    dispatch(uiActions.changePage('Home'))
+    await dispatch(fetchGroupMemberships())
   }
 }
 
