@@ -74,10 +74,10 @@ class TopBar extends Component {
 
     switch (page.type) {
       case 'Home': return 'Movienight'
-      case 'CreateGroup': return 'CreateGroup'
-      case 'JoinGroup': return 'JoinGroup'
-      case 'GroupDetails': return 'GroupDetails'
-      case 'RateMovies': return 'Rate Movie'
+      case 'CreateGroup': return 'Create a Group'
+      case 'JoinGroup': return 'Join a Group'
+      case 'GroupDetails': return 'Group Details'
+      case 'RateMovies': return 'Rate the Movies'
       default: return undefined
     }
   }
