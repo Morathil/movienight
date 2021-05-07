@@ -9,7 +9,6 @@ import TopBar from 'views/components/TopBar'
 class GroupDetails extends Component {
   render () {
     const { group, topRatedMovies } = this.props
-    //const { groupToken } = this.state
     return (
       <Grid container style={{ minHeight: '100vh' }} direction='column'>
         <TopBar />
@@ -58,7 +57,7 @@ class GroupDetails extends Component {
             </BottomButton>
           </Grid>
           <Grid item xs={6}>
-            <BottomButton onAction={this.handleDeleteGroup} colorType='secondary'>
+            <BottomButton onAction={this.handleLeaveGroup} colorType='secondary'>
               Leave Group
             </BottomButton>
           </Grid>
@@ -72,10 +71,10 @@ class GroupDetails extends Component {
     dispatch(uiActions.changePage('RateMovies', { groupId: group.id }))
   }
 
-  handleDeleteGroup = () => {
+  handleLeaveGroup = () => {
     const { dispatch, group } = this.props
     const groupToken = group.token
-    dispatch(groupsActions.deleteGroup(groupToken))
+    dispatch(groupsActions.leaveGroup(groupToken))
     }
 
 }

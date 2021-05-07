@@ -37,17 +37,17 @@ export function createGroup (currentUser, movies, groupName, dateTime) {
   })
 }
 
-/*export function deleteGroup (groupToken){
-  database.collection('groups').where('token', '==', groupToken)
-  .get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      database.collection('groups').doc(doc.id)
-        .delete()
-    });
-  });
-}*/
+// export function deleteGroup (groupToken){
+//   database.collection('groups').where('token', '==', groupToken)
+//   .get().then((querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//       database.collection('groups').doc(doc.id)
+//         .delete()
+//     });
+//   });
+// }
 
-export function deleteGroup (groupToken, currentUser) {
+export function leaveGroup (groupToken, currentUser) {
   return database.collection('groups').where('token', '==', groupToken)
     .get()
     .then((querySnapshot) => {
@@ -55,7 +55,6 @@ export function deleteGroup (groupToken, currentUser) {
         console.log(querySnapshot)
         return new Promise((resolve, reject) => {
           querySnapshot.forEach((doc) => {
-            console.log(doc)
             let nameByMemberId = doc.data().nameByMemberId
             delete nameByMemberId[currentUser.uid]
             database.collection('groups').doc(doc.id)
@@ -149,11 +148,10 @@ export function fetchMovieGenres () {
   })
 }
 
-export function fetchMoviesFromExternal (genreIds, rating) {
+export function fetchMoviesFromExternal (genreIds) {
   return new Promise((resolve, reject) => {
     theMovieDb.discover.getMovies({
-      with_genres: genreIds.join(','),
-      vote_average: rating
+      with_genres: genreIds.join(',')
     }, resolve, reject)
   })
 }

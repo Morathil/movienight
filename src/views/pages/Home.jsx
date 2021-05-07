@@ -7,7 +7,6 @@ import BottomButton from 'views/components/BottomButton'
 import TopBar from 'views/components/TopBar'
 
 class Home extends Component {
-
   render () {
     const { groups } = this.props
     

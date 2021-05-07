@@ -10,13 +10,12 @@ class CreateGroup extends Component {
   state = {
     selectedGenreIds: undefined,
     datetime: new Date().getTime(),
-    groupName: undefined,
-    rating: undefined
+    groupName: undefined
   }
 
   render () {
     const { genreEntities } = this.props
-    const { selectedGenreIds, datetime, groupName, rating } = this.state
+    const { selectedGenreIds, datetime, groupName } = this.state
     const formattedDatetime = new Date(new Date(datetime).toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
 
     return (
@@ -60,8 +59,8 @@ class CreateGroup extends Component {
 
   handleOnCreateGroup = () => {
     const { dispatch } = this.props
-    const { selectedGenreIds, datetime, groupName, rating } = this.state
-    dispatch(groupsActions.createGroup(groupName, datetime, selectedGenreIds, rating))
+    const { selectedGenreIds, datetime, groupName } = this.state
+    dispatch(groupsActions.createGroup(groupName, datetime, selectedGenreIds))
   }
 
   handleonJoinGroup = () => {
